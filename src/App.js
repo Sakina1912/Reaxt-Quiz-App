@@ -1,25 +1,91 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import React ,{useState} from 'react'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const questions = [
+		{
+			questionText: 'What is the capital of France?',
+			answerOptions: [
+				{ answerText: 'New York', isCorrect: false },
+				{ answerText: 'London', isCorrect: false },
+				{ answerText: 'Paris', isCorrect: true },
+				{ answerText: 'Dublin', isCorrect: false },
+			],
+		},
+		{
+			questionText: 'Who is CEO of Tesla?',
+			answerOptions: [
+				{ answerText: 'Jeff Bezos', isCorrect: false },
+				{ answerText: 'Elon Musk', isCorrect: true },
+				{ answerText: 'Bill Gates', isCorrect: false },
+				{ answerText: 'Tony Stark', isCorrect: false },
+			],
+		},
+		{
+			questionText: 'The iPhone was created by which company?',
+			answerOptions: [
+				{ answerText: 'Apple', isCorrect: true },
+				{ answerText: 'Intel', isCorrect: false },
+				{ answerText: 'Amazon', isCorrect: false },
+				{ answerText: 'Microsoft', isCorrect: false },
+			],
+		},
+		{
+			questionText: 'How many Harry Potter books are there?',
+			answerOptions: [
+				{ answerText: '1', isCorrect: false },
+				{ answerText: '4', isCorrect: false },
+				{ answerText: '6', isCorrect: false },
+				{ answerText: '7', isCorrect: true },
+			],
+		},
+	];
+
+  const [currentQuestion,setCurrentQuestion] = useState(0)
+  const [showScore,setShowScore] = useState(false)
+  const [score,setScore] = useState(0)
+
+  const handleAnswerButtonClick = (isCorrect)=>{
+    if(isCorrect === true){
+      // alert('this answer is true')
+      setScore(score + 1)
+    }
+    const nextQuestion = currentQuestion + 1
+    if(nextQuestion < questions.length){
+      setCurrentQuestion(nextQuestion)
+    }else{
+      // alert('you have reached the end of the questions')
+      setShowScore(true)
+    }
+  }
+
+	return (
+		<div className='app'>
+			{showScore ? (
+				<div className='score-section'>You scored {score} out of {questions.length}</div>
+			) : (
+				<>
+					<div className='question-section'>
+						<div className='question-count'>
+							<span>Question {currentQuestion + 1}</span>/{questions.length}
+						</div>
+						<div className='question-text'>{questions[currentQuestion].questionText}</div>
+					</div>
+					<div className='answer-section'>
+						{questions[currentQuestion].answerOptions.map((answerOption)=>
+            (<button onClick={()=>handleAnswerButtonClick(answerOption.isCorrect)}>{answerOption.answerText}
+			</button>
+            ))}
+					</div>
+				</>
+			)}
+		</div>
+	);
 }
 
 export default App;
+
+
+// https://www.youtube.com/watch?v=0riHps91AzE&ab_channel=DipeshMalvia
+// https://www.youtube.com/watch?v=pCA4qpQDZD8&ab_channel=DevEd
